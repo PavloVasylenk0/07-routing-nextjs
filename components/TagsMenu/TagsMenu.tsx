@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import css from "./TagsMenu.module.css";
 
 const tags = [
@@ -20,12 +21,24 @@ export default function TagsMenu() {
     return `/notes/filter/${tag}`;
   };
 
+  const handleMenuToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleMenuClose = () => {
+    setTimeout(() => setIsOpen(false), 150);
+  };
+
+  const handleLinkClick = () => {
+    setIsOpen(false);
+  };
+
   return (
     <div className={css.menuContainer}>
       <button
         className={css.menuButton}
-        onClick={() => setIsOpen(!isOpen)}
-        onBlur={() => setTimeout(() => setIsOpen(false), 150)}
+        onClick={handleMenuToggle}
+        onBlur={handleMenuClose}
       >
         Notes ▾
       </button>
@@ -34,9 +47,14 @@ export default function TagsMenu() {
         <ul className={css.menuList}>
           {tags.map((tag) => (
             <li key={tag} className={css.menuItem}>
-              <a href={getTagUrl(tag)} className={css.menuLink}>
+              <Link
+                href={getTagUrl(tag)}
+                className={css.menuLink}
+                onClick={handleLinkClick}
+                scroll={false}
+              >
                 {tag}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
